@@ -9,17 +9,30 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    // Outlets
+    @IBOutlet weak var display: UILabel!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+    // Variables
+    var userIsTypingNumber = false
+    
+    // Methods
+    @IBAction func appendDigit(sender: UIButton) {
+        let digit = sender.currentTitle!
+        if userIsTypingNumber{
+            display.text = display.text! + digit
+        }
+        else {
+            display.text = digit
+            userIsTypingNumber = true
+        }
+        
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    @IBAction func clear() {
+        display.text = "0"
+        userIsTypingNumber = false
     }
-
 
 }
 
