@@ -9,6 +9,10 @@
 import UIKit
 
 class ViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.backgroundColor = UIColor.lightGrayColor()
+    }
     
     // Outlets
     @IBOutlet weak var display: UILabel!
@@ -17,6 +21,7 @@ class ViewController: UIViewController {
     // Variables
     var userIsTypingNumber = false
     var opperandStack = Array<Double>()
+    var appendOperation = true
     var displayValue: Double{
         get{
             return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
@@ -39,18 +44,20 @@ class ViewController: UIViewController {
         }
         if userIsTypingNumber{
             display.text = display.text! + digit
+            history.text = history.text! + digit
         }
         else {
             display.text = digit
             userIsTypingNumber = true
+            history.text = history.text! + " \(digit)"
         }
-        history.text = history.text! + " \(digit)"
     }
     
     @IBAction func enter() {
         userIsTypingNumber = false
         opperandStack.append(displayValue)
         if lastOperation != nil{
+            appendOperation = false
             operate(lastOperation!)
         }
     }
@@ -72,13 +79,15 @@ class ViewController: UIViewController {
             case "cos": performOperation { cos($0) }
             default: break
         }
-        if lastOperation != nil{
-            history.text = history.text! + " \(lastOperation!.currentTitle!)"
+        if appendOperation{
+            history.text = history.text! + " \(operation)"
         }
+        appendOperation = true
     }
     
     func performOperation(operation: (Double, Double) -> Double) {
         if opperandStack.count >= 2{
+                        println("\(opperandStack)")
             displayValue = operation(opperandStack.removeLast(), opperandStack.removeLast())
             opperandStack.append(displayValue)
             lastOperation = nil
@@ -89,8 +98,6 @@ class ViewController: UIViewController {
         if opperandStack.count >= 1{
             displayValue = operation(opperandStack.removeLast())
             opperandStack.append(displayValue)
-            history.text = history.text! + " \(lastOperation!.currentTitle!)"
-            lastOperation = nil
         }
     }
     
