@@ -31,6 +31,7 @@ class CalculatorBrain{
     
     private var opStack = [Op]()
     private var knownOps = [String:Op]()
+    private var history = String?()
     
     init(){
         func learnOp(op: Op){
@@ -52,16 +53,18 @@ class CalculatorBrain{
             switch op {
             case .Operand(let operand):
                 return (operand, remainingOps)
-            case .UnaryOperation(_, let operation):
+            case .UnaryOperation(let symbol, let operation):
                 let operandEvaluation = evaluate(remainingOps)
                 if let operand = operandEvaluation.result {
+                    history! += "(\(operand) \(symbol)) "
                     return (operation(operand), operandEvaluation.remaingOps )
                 }
-            case .BinaryOperation(_, let operation):
+            case .BinaryOperation(let symbol, let operation):
                 let op1Evaluation = evaluate(remainingOps)
                 if let operand1 = op1Evaluation.result{
                     let op2Evaluation = evaluate(op1Evaluation.remaingOps)
                     if let operand2 = op2Evaluation.result{
+                        history! += "(\(operand1) \(symbol) \(operand2)) "
                         return (operation(operand1, operand2), op2Evaluation.remaingOps)
                     }
                 }
@@ -70,18 +73,18 @@ class CalculatorBrain{
         return (nil, ops)
     }
     
-    func evaluate() -> Double?{
+    func evaluate() -> (Double?, String?){
+        history = ""
         let (result, remainder) = evaluate(opStack)
-        println("\(opStack) = \(result) with \(remainder) left over")
-        return result
+        return (result, history)
     }
     
-    func pushOperand(operand: Double) -> Double?{
+    func pushOperand(operand: Double) -> (Double?, String?){
         opStack.append(Op.Operand(operand))
         return evaluate()
     }
     
-    func performOperand(symbol: String) -> Double?{
+    func performOperand(symbol: String) -> (Double?, String?){
         if let operation = knownOps[symbol]{
             opStack.append(operation)
         }

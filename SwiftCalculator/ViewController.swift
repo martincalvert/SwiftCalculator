@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     // View init
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.lightGrayColor()
+        self.view.backgroundColor = UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1)
     }
     
     // Outlets
@@ -56,8 +56,10 @@ class ViewController: UIViewController {
     // Pushes number onto the stack
     @IBAction func enter() {
         userIsTypingNumber = false
-        if let value = brain.pushOperand(displayValue){
-            displayValue = value
+        let (value, opHistory) = brain.pushOperand(displayValue)
+        if value != nil {
+            displayValue = value!
+            history.text = opHistory!
         } else{
             displayValue = 0
         }
@@ -69,8 +71,10 @@ class ViewController: UIViewController {
             enter()
         }
         if let operation = sender.currentTitle{
-            if let result = brain.performOperand(operation){
-                displayValue = result
+            let (value, opHistory) = brain.performOperand(operation)
+            if value != nil{
+                displayValue = value!
+                history.text = opHistory!
             }
             else{
                 displayValue = 0
