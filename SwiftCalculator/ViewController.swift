@@ -9,6 +9,8 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    // View init
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.lightGrayColor()
@@ -16,12 +18,12 @@ class ViewController: UIViewController {
     
     // Outlets
     @IBOutlet weak var display: UILabel!
-
     @IBOutlet weak var history: UILabel!
+    
     // Variables
+    
     var userIsTypingNumber = false
-    var opperandStack = Array<Double>()
-    var appendOperation = true
+    var brain = CalculatorBrain()
     var displayValue: Double{
         get{
             return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
@@ -30,9 +32,9 @@ class ViewController: UIViewController {
             display.text = "\(newValue)"
         }
     }
-    var lastOperation = UIButton?()
     
     // Methods
+    // Adds digit to the display
     @IBAction func appendDigit(sender: UIButton) {
         var digit = sender.currentTitle!
         switch digit{
@@ -44,66 +46,40 @@ class ViewController: UIViewController {
         }
         if userIsTypingNumber{
             display.text = display.text! + digit
-            history.text = history.text! + digit
         }
         else {
             display.text = digit
             userIsTypingNumber = true
-            history.text = history.text! + " \(digit)"
         }
     }
     
+    // Pushes number onto the stack
     @IBAction func enter() {
         userIsTypingNumber = false
-        opperandStack.append(displayValue)
-        if lastOperation != nil{
-            appendOperation = false
-            operate(lastOperation!)
+        if let value = brain.pushOperand(displayValue){
+            displayValue = value
+        } else{
+            displayValue = 0
         }
     }
-    
+
+    // Performs operation
     @IBAction func operate(sender: UIButton) {
-        let operation = sender.currentTitle!
-        lastOperation = sender
         if userIsTypingNumber{
-            userIsTypingNumber = false
-            opperandStack.append(displayValue)
+            enter()
         }
-        switch operation{
-            case "✖️": performOperation { $0 * $1 }
-            case "➗": performOperation { $0 / $1 }
-            case "➖": performOperation { $0 - $1 }
-            case "➕": performOperation { $0 + $1 }
-            case "√": performOperation { sqrt($0) }
-            case "sin": performOperation { sin($0) }
-            case "cos": performOperation { cos($0) }
-            default: break
-        }
-        if appendOperation{
-            history.text = history.text! + " \(operation)"
-        }
-        appendOperation = true
-    }
-    
-    func performOperation(operation: (Double, Double) -> Double) {
-        if opperandStack.count >= 2{
-                        println("\(opperandStack)")
-            displayValue = operation(opperandStack.removeLast(), opperandStack.removeLast())
-            opperandStack.append(displayValue)
-            lastOperation = nil
-        }
-    }
-    
-    private func performOperation(operation: Double -> Double) {
-        if opperandStack.count >= 1{
-            displayValue = operation(opperandStack.removeLast())
-            opperandStack.append(displayValue)
+        if let operation = sender.currentTitle{
+            if let result = brain.performOperand(operation){
+                displayValue = result
+            }
+            else{
+                displayValue = 0
+            }
         }
     }
     
     @IBAction func reset(sender: UIButton) {
         displayValue = 0
-        opperandStack = Array<Double>()
         userIsTypingNumber = false
         history.text = ""
     }

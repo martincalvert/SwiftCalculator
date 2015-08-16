@@ -13,6 +13,7 @@
 		DB78FBCC1B6F1F2F00AD5EA7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB78FBCB1B6F1F2F00AD5EA7 /* Images.xcassets */; };
 		DB78FBCF1B6F1F2F00AD5EA7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB78FBCD1B6F1F2F00AD5EA7 /* LaunchScreen.xib */; };
 		DB78FBDB1B6F1F2F00AD5EA7 /* SwiftCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB78FBDA1B6F1F2F00AD5EA7 /* SwiftCalculatorTests.swift */; };
+		DB78FBE51B79959900AD5EA7 /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB78FBE41B79959900AD5EA7 /* CalculatorBrain.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		DB78FBD41B6F1F2F00AD5EA7 /* SwiftCalculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftCalculatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB78FBD91B6F1F2F00AD5EA7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB78FBDA1B6F1F2F00AD5EA7 /* SwiftCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftCalculatorTests.swift; sourceTree = "<group>"; };
+		DB78FBE41B79959900AD5EA7 /* CalculatorBrain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalculatorBrain.swift; path = SwiftCalculator/CalculatorBrain.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 		DB78FBB61B6F1F2F00AD5EA7 = {
 			isa = PBXGroup;
 			children = (
+				DB78FBE41B79959900AD5EA7 /* CalculatorBrain.swift */,
 				DB78FBC11B6F1F2F00AD5EA7 /* SwiftCalculator */,
 				DB78FBD71B6F1F2F00AD5EA7 /* SwiftCalculatorTests */,
 				DB78FBC01B6F1F2F00AD5EA7 /* Products */,
@@ -212,6 +215,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB78FBE51B79959900AD5EA7 /* CalculatorBrain.swift in Sources */,
 				DB78FBC71B6F1F2F00AD5EA7 /* ViewController.swift in Sources */,
 				DB78FBC51B6F1F2F00AD5EA7 /* AppDelegate.swift in Sources */,
 			);
