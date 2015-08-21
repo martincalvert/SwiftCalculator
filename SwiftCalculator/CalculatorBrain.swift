@@ -45,6 +45,23 @@ class CalculatorBrain{
         learnOp(Op.UnaryOperation("sin") { sin($0) })
         learnOp(Op.UnaryOperation("cos") { cos($0) })
     }
+    var program: AnyObject{
+        get{
+            return opStack.map { $0.description }
+        }
+        set{
+            if let opSymbols = newValue as? Array<String>{
+                var newOpStack = [Op]()
+                for opSymbol in opSymbols{
+                    if let op = knownOps[opSymbol] {
+                        newOpStack.append(op)
+                    } else if let operand = NSNumberFormatter().numberFromString(opSymbol)?.doubleValue {
+                        newOpStack.append(.Operand(operand))
+                    }
+                }
+            }
+        }
+    }
     
     private func evaluate(ops: [Op]) -> (result: Double?, remaingOps: [Op]){
         if !ops.isEmpty{
